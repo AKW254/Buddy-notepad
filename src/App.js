@@ -6,7 +6,7 @@ import Header from './Header';
 import Search from './Search';
 import Listnote from './Listnote';
 import Footer from './Footer';
-import Notemodal from './Notemodal';
+import Modal from './Modal';
 
 
 function App() {
@@ -54,6 +54,24 @@ if (!localStorage.getItem('notes')) {
     setShowModal(false);
   };
   
+  //CRUD FOR NOTEPAD
+  const handleAddNote = (newNote) => {
+    setNotes([...notes, newNote]); // Add new note to the state
+    closeModal(); // Close the modal after adding
+  };
+
+  const handleUpdateNote = (updatedNote) => {
+    const updatedNotes = notes.map((note) =>
+      note.id === updatedNote.id ? updatedNote : note
+    ); // Update the note in the state
+    setNotes(updatedNotes);
+    closeModal(); // Close the modal after updating
+  };
+
+  const handleDeleteNote = (id) => {
+    const filteredNotes = notes.filter((note) => note.id !== id); // Remove the note from the state
+    setNotes(filteredNotes);
+  };
 
   
   return (
@@ -65,9 +83,17 @@ if (!localStorage.getItem('notes')) {
       ) : (
         <p className="text-center my-3 py-4">No notes available.</p>
       )}
-     
       <Footer openModal={() => openModal(null)} />
-      {showModal && <Notemodal note={selectedNote} onClose={closeModal} />}
+      {showModal && (
+        <Modal
+          note={selectedNote}
+          onClose={closeModal}
+          onAddNote={handleAddNote} // Pass add note function
+          onUpdateNote={handleUpdateNote} // Pass update note function
+          onDeleteNote={handleDeleteNote} // Pass delete note function
+        />
+      )}
+     
     </div>
     
   );
