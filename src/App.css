@@ -14,29 +14,48 @@ body {
   text-align: justify;
 }
 
+/* App.css */
+.note-list {
+  margin-top: 20px;
+}
+
 .note-item {
-  padding: 20px;
-  border-bottom: 1px solid #f1f3f4;
+  cursor: pointer;
+  padding: 15px;
+  transition: background-color 0.2s;
+}
+
+
+.note-details i.bi-sticky:hover {
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color:#fcf0f0;
+}
+
+.note-details {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
-.note-item:last-child {
-  border-bottom: none;
+
+.note-details i.bi-sticky {
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color:#007bff;
 }
-.fab {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+
+.note-details div {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 30px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
 }
+.note-item:hover .note-details i.bi-sticky {
+  color: #0a0a0a; /* Change this to your desired hover color */
+}
+.note-item strong {
+  font-size: 1.2rem;
+}
+
+.note-item p {
+  margin: 0;
+  color: #6c757d;
+}
+

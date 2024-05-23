@@ -1,19 +1,22 @@
 import React from 'react';
-import { InputGroup, FormControl } from 'react-bootstrap';
-function Search() {
+function Search({ searchTerm ,handleSearch }) {
   return (
-    <div>
-      <InputGroup className="px-4 me-4">
-                <InputGroup.Text  id="search-icon">
-                    <i className="bi bi-search"></i>
-                </InputGroup.Text>
-                <FormControl
-                    placeholder="Search notes"
-                    aria-label="Search notes"
-                    aria-describedby="search-icon"
-                />
-            </InputGroup>
-        </div>
+    <div className="search-bar my-3">
+      <div className="input-group">
+        <span className="input-group-text" id="search-icon">
+          <i className="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search notes"
+          aria-label="Search notes"
+          aria-describedby="search-icon"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </div>
+    </div>
   )
 }
 
