@@ -45,6 +45,11 @@ function App() {
     <div className="container">
     <Header />
       <Search searchTerm={searchTerm} handleSearch={handleSearch} />
+       {filteredNotes.length > 0 ? (
+        <Listnote notes={filteredNotes} openModal={openModal} />
+      ) : (
+        <p className="text-center my-3 py-4">No notes available.</p>
+      )}
       <Listnote notes={filteredNotes} openModal={openModal} />
       <Footer openModal={() => openModal(null)} />
       {showModal && <Notemodal note={selectedNote} onClose={closeModal} />}

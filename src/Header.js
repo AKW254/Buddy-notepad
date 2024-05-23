@@ -8,10 +8,7 @@ function Header() {
       <div className="d-flex align-items-center">
         <img src={logo} alt="Logo" className="me-3 px-2" style={{ width: '180px', height: '80px', }}  />
       </div>
-      <div>
-        <FontAwesomeIcon icon={faCog} className="settings-icon col align-self-end me-4" />
-       </div>
-    
+      
 </header>
 
   
