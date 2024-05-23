@@ -5,10 +5,7 @@ body {
   width: 100vw;
 }
 
-.settings-icon {
-  font-size: 24px;
-  cursor: pointer;
-}
+
 .content {
   text-decoration: underline solid black 2px;
   text-align: justify;
@@ -24,13 +21,10 @@ body {
   padding: 15px;
   transition: background-color 0.2s;
 }
-
-
-.note-details i.bi-sticky:hover {
-  font-size: 1.5rem;
-  margin-right: 10px;
-  color:#fcf0f0;
+.note-item:hover {
+  background-color: #007bff;
 }
+
 
 .note-details {
   display: flex;

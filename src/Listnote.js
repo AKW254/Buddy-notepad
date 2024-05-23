@@ -15,6 +15,7 @@ function Listnote({ notes, openModal }) {
               <strong>{note.title}</strong>
               <p>{note.date}</p>
             </div>
+          
           </div>
         
         </li>
