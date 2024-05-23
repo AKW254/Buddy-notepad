@@ -50,7 +50,7 @@ function App() {
       ) : (
         <p className="text-center my-3 py-4">No notes available.</p>
       )}
-      <Listnote notes={filteredNotes} openModal={openModal} />
+     
       <Footer openModal={() => openModal(null)} />
       {showModal && <Notemodal note={selectedNote} onClose={closeModal} />}
     </div>
