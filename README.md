@@ -12,10 +12,10 @@ Buddy Notepad is a simple React application for managing notes. It allows users 
 ## Screenshots
 
 ### Main Screen
-![Main Screen](screenshot-main.png)
+![Main Screen](public/images/Screenshot(1).png)
 
 ### Note Modal
-![Note Modal](screenshot-modal.png)
+![Note Modal](public/images/Screenshot(2).png)
 
 ## Technologies Used
 
