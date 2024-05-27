@@ -13,7 +13,7 @@ const Listnote = ({ notes, openModal }) => {
             <i className="bi bi-sticky"></i>
             <div>
               <strong>{note.title}</strong>
-              <p>{note.date}</p>
+              <p className='bi bi-calendar'> {note.date}</p>
             </div>
           </div>
           <div className="action">

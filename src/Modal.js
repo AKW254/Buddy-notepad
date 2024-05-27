@@ -43,8 +43,9 @@ const handleEdit = () => {
                 return (
                   <div>
                    <div className="text-center"> <strong>{title}</strong>
-                    <p>{content}</p>
-                    <p>{date}</p>
+                      <p>{content}</p>
+                      <hr/>
+                    <p className='bi bi-calendar'> {date}</p>
                   </div>
                     </div>
                 );
