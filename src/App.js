@@ -8,33 +8,32 @@ import Listnote from './Listnote';
 import Footer from './Footer';
 import Modal from './Modal';
 
-
 function App() {
-const initialNotes = [
-  { id: 1, title: 'Dentist appointment', date: 'Jan 2, 2023 at 12:00 PM' },
-  { id: 2, title: 'Pick up dry cleaning', date: 'Jan 2, 2023 at 12:00 PM' },
-  { id: 3, title: 'Buy groceries', date: 'Jan 2, 2023 at 12:00 PM' },
-  { id: 4, title: 'Call mom', date: 'Jan 2, 2023 at 12:00 PM' },
-];
- 
-// Initialize localStorage with the initial notes if not already set
-if (!localStorage.getItem('notes')) {
-  localStorage.setItem('notes', JSON.stringify(initialNotes));
-}
+  const initialNotes = [
+    { id: 1, title: 'Dentist appointment', date: 'Jan 2, 2023 at 12:00 PM' },
+    { id: 2, title: 'Pick up dry cleaning', date: 'Jan 2, 2023 at 12:00 PM' },
+    { id: 3, title: 'Buy groceries', date: 'Jan 2, 2023 at 12:00 PM' },
+    { id: 4, title: 'Call mom', date: 'Jan 2, 2023 at 12:00 PM' },
+  ];
 
-  //Get Notes from localstorage
+  // Initialize localStorage with the initial notes if not already set
+  if (!localStorage.getItem('notes')) {
+    localStorage.setItem('notes', JSON.stringify(initialNotes));
+  }
+
+  // Get notes from localStorage
   const storedNotes = JSON.parse(localStorage.getItem('notes'));
-  //Declare the store array
+  // Declare the store array
   const [notes, setNotes] = useState(storedNotes || []);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
+  const [modalMode, setModalMode] = useState(null); // Mode for modal (add, edit, view)
 
   // Sync notes state with localStorage
   useEffect(() => {
     localStorage.setItem('notes', JSON.stringify(notes));
   }, [notes]);
-
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -44,58 +43,58 @@ if (!localStorage.getItem('notes')) {
     note.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const openModal = (note) => {
+  const openModal = (note, mode) => {
     setSelectedNote(note);
+    setModalMode(mode);
     setShowModal(true);
   };
 
   const closeModal = () => {
     setSelectedNote(null);
+    setModalMode(null);
     setShowModal(false);
   };
-  
-  //CRUD FOR NOTEPAD
+
   const handleAddNote = (newNote) => {
-    setNotes([...notes, newNote]); // Add new note to the state
-    closeModal(); // Close the modal after adding
+    setNotes([...notes, newNote]);
+    closeModal();
   };
 
   const handleUpdateNote = (updatedNote) => {
     const updatedNotes = notes.map((note) =>
       note.id === updatedNote.id ? updatedNote : note
-    ); // Update the note in the state
+    );
     setNotes(updatedNotes);
-    closeModal(); // Close the modal after updating
+    closeModal();
   };
 
   const handleDeleteNote = (id) => {
-    const filteredNotes = notes.filter((note) => note.id !== id); // Remove the note from the state
-    setNotes(filteredNotes);
+    const updatedNotes = notes.filter((note) => note.id !== id);
+    setNotes(updatedNotes);
+    closeModal();
   };
 
-  
   return (
     <div className="container">
-    <Header />
+      <Header />
       <Search searchTerm={searchTerm} handleSearch={handleSearch} />
-       {filteredNotes.length > 0 ? (
+      {filteredNotes.length > 0 ? (
         <Listnote notes={filteredNotes} openModal={openModal} />
       ) : (
         <p className="text-center my-3 py-4">No notes available.</p>
       )}
-      <Footer openModal={() => openModal(null)} />
+      <Footer openModal={() => openModal(null, 'add')} />
       {showModal && (
         <Modal
           note={selectedNote}
+          mode={modalMode}
           onClose={closeModal}
-          onAddNote={handleAddNote} // Pass add note function
-          onUpdateNote={handleUpdateNote} // Pass update note function
-          onDeleteNote={handleDeleteNote} // Pass delete note function
+          onAddNote={handleAddNote}
+          onUpdateNote={handleUpdateNote}
+          onDeleteNote={handleDeleteNote}
         />
       )}
-     
     </div>
-    
   );
 }
 

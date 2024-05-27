@@ -17,7 +17,6 @@ body {
 }
 
 .note-item {
-  cursor: pointer;
   padding: 15px;
   transition: background-color 0.2s;
 }
@@ -40,6 +39,7 @@ body {
 .note-details div {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 .note-item:hover .note-details i.bi-sticky {
   color: #0a0a0a; /* Change this to your desired hover color */
@@ -48,8 +48,14 @@ body {
   font-size: 1.2rem;
 }
 
+
 .note-item p {
   margin: 0;
   color: #6c757d;
 }
-
+.action .edit{
+cursor: pointer;
+}
+.action .delete{
+cursor: pointer;
+}
