@@ -1,0 +1,24 @@
+{
+  "notes": [
+  {
+    "id": 1,
+    "title": "Dentist appointment",
+    "date": "Jan 2, 2023 at 12:00 PM"
+  },
+  {
+    "id": 2,
+    "title": "Pick up dry cleaning",
+    "date": "Jan 2, 2023 at 12:00 PM"
+  },
+  {
+    "id": 3,
+    "title": "Buy groceries",
+    "date": "Jan 2, 2023 at 12:00 PM"
+  },
+  {
+    "id": 4,
+    "title": "Call mom",
+    "date": "Jan 2, 2023 at 12:00 PM"
+  }
+]
+}
