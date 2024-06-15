@@ -8,11 +8,10 @@ import Listnote from './Listnote';
 import Footer from './Footer';
 import Modal from './Modal';
 import useFetch from './customhook/useFetch';
-
+import axios from 'axios';
 function App() {
-  
-  const { data, loading, error } = useFetch('http://localhost:3001/notes');
-
+  const apiUrl = 'http://localhost:3001/notes';
+  const { data, loading, error, doFetch, setData } = useFetch(apiUrl);
   // Declare the store array
   const [notes, setNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -48,23 +47,47 @@ function App() {
     setShowModal(false);
   };
 
-  const handleAddNote = (newNote) => {
-    setNotes([...notes, newNote]);
-    closeModal();
+  // Create Note
+  
+  const handleAddNote = async (newNote) => {
+    try {
+      const response = await axios.post(apiUrl, newNote, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setNotes((prevNotes) => [...prevNotes, response.data]);
+      closeModal();
+    } catch (error) {
+      console.error('Error adding note:', error);
+    }
+  };
+ const handleUpdateNote = async (updatedNote) => {
+    try {
+      const response = await axios.put(`${apiUrl}/${updatedNote.id}`, updatedNote, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const updatedNotes = notes.map((note) =>
+        note.id === updatedNote.id ? response.data : note
+      );
+      setNotes(updatedNotes);
+      closeModal();
+    } catch (error) {
+      console.error('Error updating note:', error);
+    }
   };
 
-  const handleUpdateNote = (updatedNote) => {
-    const updatedNotes = notes.map((note) =>
-      note.id === updatedNote.id ? updatedNote : note
-    );
-    setNotes(updatedNotes);
-    closeModal();
-  };
-
-  const handleDeleteNote = (id) => {
-    const updatedNotes = notes.filter((note) => note.id !== id);
-    setNotes(updatedNotes);
-    closeModal();
+  const handleDeleteNote = async (id) => {
+    try {
+      await axios.delete(`${apiUrl}/${id}`);
+      const updatedNotes = notes.filter((note) => note.id !== id);
+      setNotes(updatedNotes);
+      closeModal();
+    } catch (error) {
+      console.error('Error deleting note:', error);
+    }
   };
 
   return (
