@@ -1,8 +1,22 @@
 import React from 'react'
 
 
-const Listnote = ({ notes, openModal }) => {
+const Listnote = ({ notes, openModal, loading, error }) => {
+  
+    // Handle loading and error states
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+   if (notes.length === 0) {
+   return <p className="text-center my-3 py-4">No notes available.</p>
+  }
+
   return (
+   
+  
     <ul className="list-group note-list">
       {notes.map((note) => (
         <li

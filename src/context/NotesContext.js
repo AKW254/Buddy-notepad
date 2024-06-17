@@ -1,35 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import './App.css';
-import Header from './Header';
-import Search from './Search';
-import Listnote from './Listnote';
-import Footer from './Footer';
-import Modal from './Modal';
-import useFetch from './customhook/useFetch';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-function App() {
+import useFetch from '../customhook/useFetch';
+
+export const NotesContext = createContext();
+
+export const NotesProvider = ({ children }) => {
   const apiUrl = 'http://localhost:3001/notes';
-  const { data, loading, error, doFetch, setData } = useFetch(apiUrl);
-  // Declare the store array
+  const { data, loading, error } = useFetch(apiUrl);
   const [notes, setNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
-  const [modalMode, setModalMode] = useState(null); // Mode for modal (add, edit, view)
+  const [modalMode, setModalMode] = useState(null);
 
-// Set notes state with fetched data
   useEffect(() => {
     if (data) {
       setNotes(data);
     }
   }, [data]);
 
-   const handleSearch = (event) => {
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -47,8 +39,6 @@ function App() {
     setShowModal(false);
   };
 
-  // Create Note
-  
   const handleAddNote = async (newNote) => {
     try {
       const response = await axios.post(apiUrl, newNote, {
@@ -62,7 +52,8 @@ function App() {
       console.error('Error adding note:', error);
     }
   };
- const handleUpdateNote = async (updatedNote) => {
+
+  const handleUpdateNote = async (updatedNote) => {
     try {
       const response = await axios.put(`${apiUrl}/${updatedNote.id}`, updatedNote, {
         headers: {
@@ -79,7 +70,7 @@ function App() {
     }
   };
 
-  const handleDeleteNote = async ( deleteNote ) => {
+  const handleDeleteNote = async (deleteNote) => {
     try {
       await axios.delete(`${apiUrl}/${deleteNote.id}`);
       const updatedNotes = notes.filter((note) => note.id !== deleteNote.id);
@@ -90,27 +81,25 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <Header />
-      <Search searchTerm={searchTerm} handleSearch={handleSearch} />
-      {filteredNotes.length > 0 ? (
-        <Listnote notes={filteredNotes} openModal={openModal} />
-      ) : (
-        <p className="text-center my-3 py-4">No notes available.</p>
-      )}
-      <Footer openModal={() => openModal(null, 'add')} />
-      {showModal && (
-        <Modal
-          note={selectedNote}
-          mode={modalMode}
-          onClose={closeModal}
-          onAddNote={handleAddNote}
-          onUpdateNote={handleUpdateNote}
-          onDeleteNote={handleDeleteNote}
-        />
-      )}
-    </div>
+    <NotesContext.Provider
+      value={{
+        notes,
+        loading,
+        error,
+        searchTerm,
+        handleSearch,
+        filteredNotes,
+        showModal,
+        selectedNote,
+        modalMode,
+        openModal,
+        closeModal,
+        handleAddNote,
+        handleUpdateNote,
+        handleDeleteNote,
+      }}
+    >
+      {children}
+    </NotesContext.Provider>
   );
-}
-
-export default App;
+};
