@@ -1,23 +1,18 @@
-import React from 'react'
-
+import React from 'react';
 
 const Listnote = ({ notes, openModal, loading, error }) => {
-  
-    // Handle loading and error states
+  // Handle loading and error states
   if (loading) {
     return <p>Loading...</p>;
   }
-
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-   if (notes.length < 0) {
-    <p className="text-center my-3 py-4">No notes available.</p>
+  if (notes.length === 0) {
+    return <p className="text-center my-3 py-4">No notes available.</p>;
   }
 
   return (
-   
-    
     <ul className="list-group note-list">
       {notes.map((note) => (
         <li
@@ -28,17 +23,23 @@ const Listnote = ({ notes, openModal, loading, error }) => {
             <i className="bi bi-sticky"></i>
             <div>
               <strong>{note.title}</strong>
-              <p className='bi bi-calendar'> {note.date}</p>
+              <p className="bi bi-calendar"> {note.date}</p>
             </div>
           </div>
           <div className="action">
             <i
               className="edit bi bi-pencil-square px-4"
-              onClick={() => openModal(note, 'edit')}
+              onClick={(e) => {
+                e.stopPropagation();
+                openModal(note, 'edit');
+              }}
             ></i>
             <i
               className="delete bi bi-trash3"
-              onClick={() => openModal(note, 'delete')}
+              onClick={(e) => {
+                e.stopPropagation();
+                openModal(note, 'delete');
+              }}
             ></i>
           </div>
         </li>

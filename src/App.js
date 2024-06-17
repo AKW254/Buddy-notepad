@@ -11,7 +11,7 @@ import useFetch from './customhook/useFetch';
 import axios from 'axios';
 function App() {
   const apiUrl = 'http://localhost:3001/notes';
-  const { data, loading, error, doFetch, setData } = useFetch(apiUrl);
+  const { data, loading, error} = useFetch(apiUrl);
   // Declare the store array
   const [notes, setNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,7 +25,7 @@ function App() {
     if (data) {
       setNotes(data);
     }
-  }, [data]);
+  }, [notes]);
 
    const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -94,11 +94,7 @@ function App() {
     <div className="container">
       <Header />
       <Search searchTerm={searchTerm} handleSearch={handleSearch} />
-      {filteredNotes.length > 0 ? (
-        <Listnote notes={filteredNotes} openModal={openModal} />
-      ) : (
-        <p className="text-center my-3 py-4">No notes available.</p>
-      )}
+       <Listnote notes={filteredNotes} loading={loading} error={error} openModal={openModal} />
       <Footer openModal={() => openModal(null, 'add')} />
       {showModal && (
         <Modal
