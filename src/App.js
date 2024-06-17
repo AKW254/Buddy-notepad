@@ -7,37 +7,29 @@ import Search from './Search';
 import Listnote from './Listnote';
 import Footer from './Footer';
 import Modal from './Modal';
-
+import useFetch from './customhook/useFetch';
+import axios from 'axios';
 function App() {
-  const initialNotes = [
-    { id: 1, title: 'Dentist appointment', date: 'Jan 2, 2023 at 12:00 PM' },
-    { id: 2, title: 'Pick up dry cleaning', date: 'Jan 2, 2023 at 12:00 PM' },
-    { id: 3, title: 'Buy groceries', date: 'Jan 2, 2023 at 12:00 PM' },
-    { id: 4, title: 'Call mom', date: 'Jan 2, 2023 at 12:00 PM' },
-  ];
-
-  // Initialize localStorage with the initial notes if not already set
-  if (!localStorage.getItem('notes')) {
-    localStorage.setItem('notes', JSON.stringify(initialNotes));
-  }
-
-  // Get notes from localStorage
-  const storedNotes = JSON.parse(localStorage.getItem('notes'));
+  const apiUrl = 'http://localhost:3001/notes';
+  const { data, loading, error, doFetch, setData } = useFetch(apiUrl);
   // Declare the store array
-  const [notes, setNotes] = useState(storedNotes || []);
+  const [notes, setNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [modalMode, setModalMode] = useState(null); // Mode for modal (add, edit, view)
 
-  // Sync notes state with localStorage
+// Set notes state with fetched data
   useEffect(() => {
-    localStorage.setItem('notes', JSON.stringify(notes));
-  }, [notes]);
+    if (data) {
+      setNotes(data);
+    }
+  }, [data]);
 
-  const handleSearch = (event) => {
+   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
+
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -55,23 +47,46 @@ function App() {
     setShowModal(false);
   };
 
-  const handleAddNote = (newNote) => {
-    setNotes([...notes, newNote]);
-    closeModal();
+  // Create Note
+  
+  const handleAddNote = async (newNote) => {
+    try {
+      const response = await axios.post(apiUrl, newNote, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setNotes((prevNotes) => [...prevNotes, response.data]);
+      closeModal();
+    } catch (error) {
+      console.error('Error adding note:', error);
+    }
+  };
+ const handleUpdateNote = async (updatedNote) => {
+    try {
+      const response = await axios.put(`${apiUrl}/${updatedNote.id}`, updatedNote, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const updatedNotes = notes.map((note) =>
+        note.id === updatedNote.id ? response.data : note
+      );
+      setNotes(updatedNotes);
+      closeModal();
+    } catch (error) {
+      console.error('Error updating note:', error);
+    }
   };
 
-  const handleUpdateNote = (updatedNote) => {
-    const updatedNotes = notes.map((note) =>
-      note.id === updatedNote.id ? updatedNote : note
-    );
-    setNotes(updatedNotes);
-    closeModal();
-  };
-
-  const handleDeleteNote = (id) => {
-    const updatedNotes = notes.filter((note) => note.id !== id);
-    setNotes(updatedNotes);
-    closeModal();
+  const handleDeleteNote = async ( deleteNote ) => {
+    try {
+      await axios.delete(`${apiUrl}/${deleteNote.id}`);
+      const updatedNotes = notes.filter((note) => note.id !== deleteNote.id);
+      setNotes(updatedNotes);
+    } catch (error) {
+      console.error('Error deleting note:', error);
+    }
   };
 
   return (

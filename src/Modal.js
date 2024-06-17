@@ -2,28 +2,31 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Modal = ({ note, mode, onClose, onAddNote, onUpdateNote, onDeleteNote }) => {
-  const { title,content, date, id } = note || {};
+  const { title, content, date, id } = note || {};
+   const [newId, setNewId] = useState(id|| '');
   const [newTitle, setNewTitle] = useState(title || '');
 const [newContent, setNewContent] = useState(content || '');
   useEffect(() => {
     if (note) {
+      setNewId(id)
       setNewTitle(title);
       setNewContent(content);
     } else {
+       setNewId('')
       setNewTitle('');
       setNewContent('');
     }
-  }, [note, title,content]);
+  }, [note,id,title,content]);
 
   const handleAdd = () => {
       onAddNote({ id: Date.now(), title: newTitle,content:newContent, date: new Date().toLocaleString() });
       onClose();
   };
 const handleEdit = () => {
-   onUpdateNote({ id, title: newTitle, date });
+   onUpdateNote({ id: newId, title: newTitle, content:newContent, date: new Date().toLocaleString() });
   };
   const handleDelete = () => {
-    onDeleteNote(id);
+    onDeleteNote({ id: newId });
     onClose();
   };
 
@@ -49,7 +52,8 @@ const handleEdit = () => {
                   </div>
                     </div>
                 );
-              } else if (mode === 'edit' || mode === 'add') {
+              }
+              else if (mode === 'add') {
                 return (
                   <form>
                     <div className="mb-3">
@@ -75,9 +79,52 @@ const handleEdit = () => {
 </div>
                   </form>
                 );
-              } else if (mode === 'delete') {
+              }else if (mode === 'edit') {
+                return (
+                  <form>
+                    <div className="mb-3">
+                     
+                       <input
+                        type="hidden"
+                        className="form-control"
+                        id="id"
+                        value={newId}
+                        onChange={(e) => setNewId(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="title"
+                        value={newTitle}
+                        onChange={(e) => setNewTitle(e.target.value)}
+                      />
+
+                    </div>
+                    <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Note Content</label>
+                      <textarea
+                        class="form-control"
+                        id="content"
+                        rows="3"
+                        onChange={(e) => setNewContent(e.target.value)}>
+                        {newContent}
+                      </textarea>
+</div>
+                  </form>
+                );
+              }
+              
+              else if (mode === 'delete') {
                 return (
                   <div>
+                    <form>
+                      <input
+                        type="hidden"
+                        className="form-control"
+                        id="id"
+                        value={newId}
+                        onChange={(e) => setNewId(e.target.value)}
+                      /></form>
                     <p className='text-danger'>Are you sure you want to delete this <strong>{title}</strong> note?</p>
                    
                   </div>
