@@ -19,6 +19,7 @@ function App() {
   const [selectedNote, setSelectedNote] = useState(null);
   const [modalMode, setModalMode] = useState(null); // Mode for modal (add, edit, view)
 
+ 
 // Set notes state with fetched data
   useEffect(() => {
     if (data) {
