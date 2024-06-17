@@ -1,5 +1,7 @@
-import React from 'react';
-function Search({ searchTerm ,handleSearch }) {
+import React, {  useContext }from 'react';
+import { NotesContext } from './context/NotesContext';
+function Search() {
+  const { searchTerm, handleSearch } = useContext(NotesContext);
   return (
     <div className="search-bar my-3">
       <div className="input-group">
