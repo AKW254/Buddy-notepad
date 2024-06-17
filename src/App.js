@@ -79,12 +79,11 @@ function App() {
     }
   };
 
-  const handleDeleteNote = async (id) => {
+  const handleDeleteNote = async ( deleteNote ) => {
     try {
-      await axios.delete(`${apiUrl}/${id}`);
-      const updatedNotes = notes.filter((note) => note.id !== id);
+      await axios.delete(`${apiUrl}/${deleteNote.id}`);
+      const updatedNotes = notes.filter((note) => note.id !== deleteNote.id);
       setNotes(updatedNotes);
-      closeModal();
     } catch (error) {
       console.error('Error deleting note:', error);
     }

@@ -26,7 +26,7 @@ const handleEdit = () => {
    onUpdateNote({ id: newId, title: newTitle, content:newContent, date: new Date().toLocaleString() });
   };
   const handleDelete = () => {
-    onDeleteNote(id);
+    onDeleteNote({ id: newId });
     onClose();
   };
 
@@ -89,7 +89,7 @@ const handleEdit = () => {
                         className="form-control"
                         id="id"
                         value={newId}
-                        onChange={(e) => setNewTitle(e.target.value)}
+                        onChange={(e) => setNewId(e.target.value)}
                       />
                       <input
                         type="text"
@@ -117,6 +117,14 @@ const handleEdit = () => {
               else if (mode === 'delete') {
                 return (
                   <div>
+                    <form>
+                      <input
+                        type="hidden"
+                        className="form-control"
+                        id="id"
+                        value={newId}
+                        onChange={(e) => setNewId(e.target.value)}
+                      /></form>
                     <p className='text-danger'>Are you sure you want to delete this <strong>{title}</strong> note?</p>
                    
                   </div>
