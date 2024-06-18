@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NotesContext } from './context/NotesContext';
 
-const Modal = ({ note, mode, onClose, onAddNote, onUpdateNote, onDeleteNote }) => {
+const Modal = () => {
+  const { 
+     note, mode, onClose, onAddNote, onUpdateNote, onDeleteNote 
+  
+ } = useContext(NotesContext);
   const { title, content, date, id } = note || {};
    const [newId, setNewId] = useState(id|| '');
   const [newTitle, setNewTitle] = useState(title || '');
-const [newContent, setNewContent] = useState(content || '');
+  const [newContent, setNewContent] = useState(content || '');
+  
   useEffect(() => {
     if (note) {
       setNewId(id)
@@ -29,7 +35,7 @@ const handleEdit = () => {
     onDeleteNote({ id: newId });
     onClose();
   };
-
+  
   return (
     <div className="modal fade show" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: 'block' }}>
       <div className="modal-dialog modal-dialog-centered">
