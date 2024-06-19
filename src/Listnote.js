@@ -1,8 +1,7 @@
-import React from 'react'
-
-
-const Listnote = ({ notes, openModal, loading, error }) => {
-  
+import React, { useContext } from 'react';
+import { NotesContext } from './context/NotesContext';
+const Listnote = () => {
+  const { filteredNotes, openModal, loading, error } = useContext(NotesContext);
     // Handle loading and error states
   if (loading) {
     return <p>Loading...</p>;
@@ -10,7 +9,7 @@ const Listnote = ({ notes, openModal, loading, error }) => {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-   if (notes.length === 0) {
+   if (filteredNotes.length === 0) {
    return <p className="text-center my-3 py-4">No notes available.</p>
   }
 
@@ -18,7 +17,7 @@ const Listnote = ({ notes, openModal, loading, error }) => {
    
   
     <ul className="list-group note-list">
-      {notes.map((note) => (
+      {filteredNotes.map((note) => (
         <li
           key={note.id}
           className="list-group-item note-item d-flex justify-content-between align-items-center"
