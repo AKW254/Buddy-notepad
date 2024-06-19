@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import useFetch from '../customhook/useFetch';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const NotesContext = createContext();
 
@@ -38,6 +40,14 @@ export const NotesProvider = ({ children }) => {
     setModalMode(null);
     setShowModal(false);
   };
+const notifySuccess = (message) => {
+    toast.success(message);
+  };
+
+  const notifyError = (message) => {
+    toast.error(message);
+  };
+   
 
   const handleAddNote = async (newNote) => {
     try {
@@ -48,10 +58,11 @@ export const NotesProvider = ({ children }) => {
       });
       setNotes((prevNotes) => [...prevNotes, response.data]);
       closeModal();
-       alert('Note is add!');
+      notifySuccess('Note is add!')
+     
     } catch (error) {
-      console.error('Error adding note:', error);
-        alert('This is Error adding note!');
+     
+        notifyError('This is Error adding note!');
     }
   };
 
@@ -67,9 +78,9 @@ export const NotesProvider = ({ children }) => {
       );
       setNotes(updatedNotes);
       closeModal();
-      alert('Note is updated!');
+      notifySuccess('Note is updated!');
     } catch (error) {
-       alert('Error updating note');
+       notifyError('Error updating note');
     }
   };
 
@@ -78,13 +89,14 @@ export const NotesProvider = ({ children }) => {
       await axios.delete(`${apiUrl}/${deleteNote.id}`);
       const updatedNotes = notes.filter((note) => note.id !== deleteNote.id);
       setNotes(updatedNotes);
-        alert('Note is deleted!');
+        notifySuccess('Note is deleted!');
     } catch (error) {
-        alert('Error deleting note');
+        notifyError('Error deleting note');
     }
   };
 
   return (
+     
     <NotesContext.Provider
       value={{
         notes,
@@ -104,6 +116,7 @@ export const NotesProvider = ({ children }) => {
       }}
     >
       {children}
+      <ToastContainer />
     </NotesContext.Provider>
   );
 };
