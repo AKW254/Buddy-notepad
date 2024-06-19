@@ -20,7 +20,7 @@ function App() {
       <Header />
       <Search />
       <Listnote />
-      <Footer openModal={() => openModal(null, 'add')} />
+      <Footer />
       {showModal && (
         <Modal />
       )}

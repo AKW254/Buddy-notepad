@@ -48,8 +48,10 @@ export const NotesProvider = ({ children }) => {
       });
       setNotes((prevNotes) => [...prevNotes, response.data]);
       closeModal();
+       alert('Note is add!');
     } catch (error) {
       console.error('Error adding note:', error);
+        alert('This is Error adding note!');
     }
   };
 
@@ -65,8 +67,9 @@ export const NotesProvider = ({ children }) => {
       );
       setNotes(updatedNotes);
       closeModal();
+      alert('Note is updated!');
     } catch (error) {
-      console.error('Error updating note:', error);
+       alert('Error updating note');
     }
   };
 
@@ -75,8 +78,9 @@ export const NotesProvider = ({ children }) => {
       await axios.delete(`${apiUrl}/${deleteNote.id}`);
       const updatedNotes = notes.filter((note) => note.id !== deleteNote.id);
       setNotes(updatedNotes);
+        alert('Note is deleted!');
     } catch (error) {
-      console.error('Error deleting note:', error);
+        alert('Error deleting note');
     }
   };
 
