@@ -22,6 +22,7 @@ Buddy Notepad is a simple React application for managing notes. It allows users 
 - **React**: A JavaScript library for building user interfaces.
 - **Bootstrap 5**: A CSS framework for styling the application.
 - **React Bootstrap Icons**: Bootstrap icons for UI elements.
+- **React Toastify**: React library for customizable, easy-to-use toast notifications.
 
 ## Installation
 
